@@ -23,6 +23,7 @@ activeVote = False
 countedVotes = 0
 userToKick = ''
 userExists = False
+userHostMask = ''
 
 def ping():
 	ircsock.send("Pong :pingis\n")
@@ -54,14 +55,35 @@ def input(listed):
 		ircsock.send("PRIVMSG " + chan + " :Logging " + weight + " for your new " + lift + " record\n")
 
 def findNutritionalInfo(foodItem):
-	query = "http://www.livestrong.com/thedailyplate"
-	foodItem = re.split(str(foodItem), "")
+	query = "http://www.livestrong.com/search/?mode=standard&search="
+	foodItem = re.split(" ", str(foodItem))
 	for l in foodItem:
-		query += l #append each word of foodItem to the query URL
+		query += l + "+" #append each word of foodItem to the query URL
 
 	result = urllib2.urlopen(query).read()
-	if result.find('Daily Value'):
-		print re.search('Fat\<\/strong\>', result) #why do you not work
+	if result.find('<article'):
+		info = result[result.find('<article')+1:result.find('</article>')] #grab the first returned result
+	info = re.split("\w>", info)
+	for i in info:
+		i = re.sub('<[^<]+?>', '', i)
+		i = re.sub('\s+', ' ', i)
+		i = re.sub('[,;]', '', i)
+		i = re.sub('</spa', '', i)
+		i = i.rstrip('\t\r\n\0')
+		nutrinfo = ''
+		print 'i is: ' + i + ' and nutrinfo is ' + nutrinfo
+		if i.find('Serving Size'):
+			nutrinfo += i.rstrip() + " | "
+		if i.find('Total Fat'):
+			nutrinfo += i + " | "
+		if i.find('Protein'):
+			nutrinfo += i + " | "
+		if i.find('Carbs'):
+			nutrinfo += i + " | "
+		if i.find('Calories'):
+			nutrinfo += i + " | "
+
+	ircsock.send("PRIVMSG " + chan + " :" + nutrinfo + "\n") #putting newlines or blank lines on each append
 
 def voteBan(hostmask, user):
 
@@ -86,16 +108,14 @@ def pollVote():
 		countedVotes += 1
 		if (countedVotes > 4):
 			ircsock.send("PRIVMSG " + chan + " :" + userToKick + " will be banned for 1 hour\n")
-			ircsock.send("KICKBAN " + chan + " " + userToKick + "\n")
+			ircsock.send("KICK " + chan + " " + userToKick + "\n")
+			ircsock.send("BAN " + chan + " " + userToKick + "\n")
 			resetVar()
 			t = Timer(5.0, unban(userToKick)) # this will cause problems without a list to keep track of banned users
 			t.start() #unban user after 1 hour
 		else:
 			ircsock.send("PRIVMSG " + chan + " :Vote counted. There are currently " + str(countedVotes) 
 				+ " out of 5 votes needed to ban " + userToKick + "\n")
-
-def parseMessage(line):
-	print line
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((server, port))
@@ -106,12 +126,9 @@ ircsock.send("NICK " + nick + "\n")
 joinChan(chan)
 
 while 1:
-	line = ircsock.recv(1000)
-	line = line.strip('\n\r')
-	print(line)
-	
-	if line.find("PRIVMSG") != -1:
-		parseMessage(line)
+	line = ircsock.recv(500)
+	line.strip('\r\n')
+	print line
 
 	if line.find("PING :") != -1: #respond to Ping requests
 		ping()
@@ -121,7 +138,7 @@ while 1:
 
 	if line.find(":!info") != -1:
 		foodItem = re.split(':!info ', line)
-		findNutritionalInfo(foodItem)
+		findNutritionalInfo(foodItem[1].strip('\r\n'))
 
 	if line.find(":!log") != -1:
 		try:
@@ -143,13 +160,13 @@ while 1:
 		try:
 			user = re.split('\s', line)
 			userToKick = user[4]
-			ircsock.send("PING " + userToKick + "\n")
-			if line.find('PONG') is not None: #wait for PONG response to ensure user exists in channel
+			ircsock.send("WHOIS " + userToKick + "\n")
+			if line.find(':No such nick/channel'): #wait for WHOIS response to ensure user exists in channel
+				ircsock.send("PRIVMSG " + chan + " :No such user exists\n")
+			else:
 				countedVotes = 0;
 				activeVote = True
 				voteBan(user[0], user[4])
-			else:
-				ircsock.send("PRIVMSG " + chan + " :No such user exists\n")
 		except AttributeError:
 				pass
 		except IndexError:
