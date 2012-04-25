@@ -11,19 +11,20 @@ CURRENT CHANGES:
 -1RM logging possibly abandoned? Will have to come back it
 '''
 
-import ssl, socket, re, random, urllib2
+import ssl, socket, re, random, urllib2, sys, modules.imports
 from threading import Timer
-from HTMLParser import HTMLParser
 
-server = "irc.rizon.net"
-chan = '#fittest'
-port = 6697
-nick = "BPBot"
+server = "irc.rizon.net" #hardcoding this for now
+chan = '#fit'
+port = 6697 #hardcoding this for now
+nick = 'BPtest'
+#password = 'angelina'
 activeVote = False
 countedVotes = 0
 userToKick = ''
 userExists = False
 userHostMask = ''
+inChan = False
 
 def ping():
 	ircsock.send("Pong :pingis\n")
@@ -33,8 +34,9 @@ def joinChan(chan):
 
 def logoff():
 	ircsock.send("PRIVMSG " + chan + " :I'm leaving\n") #Send our final goodbyes to the channel
-	randomNick = 'nwoihgwnv' + str(random.randint(0,100)) #disown our nick to something random
+	randomNick = nick + str(random.randint(0,100)) #disown our nick to something random
 	ircsock.send("NICK " + randomNick)
+	ircsock.send("PART")
 	ircsock.close()
 
 def input(listed):
@@ -53,37 +55,6 @@ def input(listed):
 		ircsock.send("PRIVMSG " + chan + " :Incorrect format, use !log deadlift 225lb\n")
 	else:
 		ircsock.send("PRIVMSG " + chan + " :Logging " + weight + " for your new " + lift + " record\n")
-
-def findNutritionalInfo(foodItem):
-	query = "http://www.livestrong.com/search/?mode=standard&search="
-	foodItem = re.split(" ", str(foodItem))
-	for l in foodItem:
-		query += l + "+" #append each word of foodItem to the query URL
-
-	result = urllib2.urlopen(query).read()
-	if result.find('<article'):
-		info = result[result.find('<article')+1:result.find('</article>')] #grab the first returned result
-	info = re.split("\w>", info)
-	for i in info:
-		i = re.sub('<[^<]+?>', '', i)
-		i = re.sub('\s+', ' ', i)
-		i = re.sub('[,;]', '', i)
-		i = re.sub('</spa', '', i)
-		i = i.rstrip('\t\r\n\0')
-		nutrinfo = ''
-		print 'i is: ' + i + ' and nutrinfo is ' + nutrinfo
-		if i.find('Serving Size'):
-			nutrinfo += i.rstrip() + " | "
-		if i.find('Total Fat'):
-			nutrinfo += i + " | "
-		if i.find('Protein'):
-			nutrinfo += i + " | "
-		if i.find('Carbs'):
-			nutrinfo += i + " | "
-		if i.find('Calories'):
-			nutrinfo += i + " | "
-
-	ircsock.send("PRIVMSG " + chan + " :" + nutrinfo + "\n") #putting newlines or blank lines on each append
 
 def voteBan(hostmask, user):
 
@@ -117,18 +88,34 @@ def pollVote():
 			ircsock.send("PRIVMSG " + chan + " :Vote counted. There are currently " + str(countedVotes) 
 				+ " out of 5 votes needed to ban " + userToKick + "\n")
 
+def sendMessage(message):
+	ircsock.send("PRIVMSG " + chan + " :" + message + "\n")
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((server, port))
 ircsock = ssl.wrap_socket(s)
 ircsock.send("USER " + nick + " " + nick + " " + nick + " :BPBot\n")
 ircsock.send("NICK " + nick + "\n")
 
-joinChan(chan)
-
-while 1:
+while inChan is False:
 	line = ircsock.recv(500)
 	line.strip('\r\n')
 	print line
+
+	if line.find("For more information see #help.") != -1: #wait until MOTD is complete
+			joinChan(chan)
+			inChan = True
+			print 'Now in chan' + chan
+			break
+
+while inChan is True:
+	line = ircsock.recv(500)
+	line.strip('\r\n')
+	print line
+
+	urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', line, re.I | re.S)
+	if urlFinder != None:
+		sendMessage(modules.imports.link.getHTML(urlFinder.group(1)))
 
 	if line.find("PING :") != -1: #respond to Ping requests
 		ping()
@@ -138,7 +125,7 @@ while 1:
 
 	if line.find(":!info") != -1:
 		foodItem = re.split(':!info ', line)
-		findNutritionalInfo(foodItem[1].strip('\r\n'))
+		sendMessage(modules.imports.nutrition.findNutritionalInfo(foodItem[1].strip('\r\n')))
 
 	if line.find(":!log") != -1:
 		try:
