@@ -17,8 +17,8 @@ from threading import Timer
 server = "irc.rizon.net" #hardcoding this for now
 chan = '#fit'
 port = 6697 #hardcoding this for now
-nick = 'BPtest'
-#password = 'angelina'
+nick = 'Zyzz'
+password = 'buddy5' #lets not keep this hardcoded...
 activeVote = False
 countedVotes = 0
 userToKick = ''
@@ -96,17 +96,17 @@ s.connect((server, port))
 ircsock = ssl.wrap_socket(s)
 ircsock.send("USER " + nick + " " + nick + " " + nick + " :BPBot\n")
 ircsock.send("NICK " + nick + "\n")
+ircsock.send("NickServ IDENTIFY " + password + "\n")
 
 while inChan is False:
 	line = ircsock.recv(500)
 	line.strip('\r\n')
 	print line
 
-	if line.find("For more information see #help.") != -1: #wait until MOTD is complete
-			joinChan(chan)
-			inChan = True
-			print 'Now in chan' + chan
-			break
+	if line.find("see #help.") != -1: #wait until MOTD is complete
+		joinChan(chan)
+		inChan = True
+		break
 
 while inChan is True:
 	line = ircsock.recv(500)
