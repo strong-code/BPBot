@@ -32,13 +32,6 @@ def ping():
 def joinChan(chan):
 	ircsock.send("JOIN " + chan + "\n")
 
-def logoff():
-	ircsock.send("PRIVMSG " + chan + " :I'm leaving\n") #Send our final goodbyes to the channel
-	randomNick = nick + str(random.randint(0,100)) #disown our nick to something random
-	ircsock.send("NICK " + randomNick)
-	ircsock.send("PART")
-	ircsock.close()
-
 def input(listed):
 	lift = '' #if the values never change, tell the user they misused the syntax
 	weight = ''
@@ -121,7 +114,8 @@ while inChan is True:
 		ping()
 
 	if line.find("PRIVMSG " + nick + " :logoff") != -1: #logoff and close socket connection when given the kill command
-		logoff()
+		sendMessage(modules.imports.irc_commands.logoff())
+		ircsock.close()
 
 	if line.find(":!info") != -1:
 		foodItem = re.split(':!info ', line)

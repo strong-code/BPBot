@@ -9,10 +9,7 @@ def parseLink(pagesource):
 
 
 def getHTML(url):
-	skipServerMessage = re.search('.*rizon.*', url)
-	if skipServerMessage != None:
-		pass
-	page = urllib2.urlopen(url)
+	page = urllib2.urlopen(url) #need to add a timeout for this, becuase it can hang or get looped
 	pageType = page.info().gettype()
 	if (pageType == 'text/html'): #only return a valid mime type
 		return parseLink(page.read(5000))
