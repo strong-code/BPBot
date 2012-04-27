@@ -5,6 +5,8 @@ def parseLink(pagesource):
 	if match == None:
 		return 'unable to parse URL'
 	pageTitle = match.group(1).replace('\n', '').replace('\r', '') #strip/clean title before returning
+	if pageTitle == None:
+		pass
 	return pageTitle
 
 
@@ -14,4 +16,4 @@ def getHTML(url):
 	if (pageType == 'text/html'): #only return a valid mime type
 		return parseLink(page.read(5000))
 	else:
-		return none
+		pass
