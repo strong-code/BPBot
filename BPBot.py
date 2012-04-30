@@ -13,7 +13,7 @@ from threading import Timer
 from modules.imports import *
 
 server = "irc.rizon.net" #hardcoding this for now
-chan = '#fittest'
+chan = '#fit'
 port = 6697 #hardcoding this for now
 nick = 'Zyzz'
 password = 'buddy5' #lets not keep this hardcoded...
@@ -73,13 +73,13 @@ def pollVote():
 			ircsock.send("PRIVMSG " + chan + " :Vote counted. There are currently " + str(countedVotes) 
 				+ " out of 5 votes needed to ban " + userToKick + "\n")
 
-def sendMessage(message):
+def sendMessage(message): #send a message to the current channel
 	try:
 		ircsock.send("PRIVMSG " + chan + " :" + message + "\n")
 	except TypeError:
 		pass #should log this
 
-def sendCommand(command):
+def sendCommand(command): #send a command to the server
 	try:
 		ircsock.send(command + "\n")
 	except TypeError:
@@ -118,6 +118,10 @@ while inChan is True:
 	if line.find("PRIVMSG " + nick + " :logoff") != -1: #logoff and close socket connection when given the kill command
 		sendCommand(irc_commands.logoff('Logging off'))
 		ircsock.close()
+
+	cityReg = re.search(':!weather\s(\d+)', line, re.I | re.S)
+	if cityReg != None:
+		sendMessage(weather.currWeather(cityReg.group(1).strip('\r\n')))
 
 	if line.find(":!info") != -1:
 		foodItem = re.split(':!info ', line)
