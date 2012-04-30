@@ -1,4 +1,11 @@
-def logoff():
-	randomNick = nick + str(random.randint(0,100)) #disown our nick to something random
-	logoffMessage = '/part\n'
-	return logoffMessage
+def logoff(message):
+	return "QUIT :%s" % message
+
+def joinChan(chan):
+	return "JOIN %s" % chan
+
+def ping():
+	return "PONG :pingis"
+
+def identify(nick, password):
+	return "NickServ IDENTIFY %s" % password

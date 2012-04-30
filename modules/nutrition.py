@@ -21,9 +21,10 @@ def findNutritionalInfo(foodItem):
 		i = re.sub('</spa', '', i)
 		i = i.rstrip('\t\r\n\0')
 		nutrinfo = ''
+		print i
 		
 		if i.find('Serving Size'):
-			nutrinfo += i.rstrip() + " | "
+			nutrinfo += i+ " | "
 		if i.find('Total Fat'):
 			nutrinfo += i + " | "
 		if i.find('Protein'):

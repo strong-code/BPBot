@@ -3,19 +3,17 @@ An IRC bot written in Python for #fit on Rizon.
 Helps with conversions and 1RM estimates, as well
 as a few other things.
 
-v0.7 4/9/12 - now with 100% more SSL!
+All versions and notes are now on BPBot's git repo at:
 
-CURRENT CHANGES:
--Voteban system (mostly) implemented
--Nutritional info lookup needs to be finished
--1RM logging possibly abandoned? Will have to come back it
+https://clindsay107@github.com/clindsay107/BPBot.git
 '''
 
-import ssl, socket, re, random, urllib2, sys, modules.imports
+import ssl, socket, re, random, urllib2, sys
 from threading import Timer
+from modules.imports import *
 
 server = "irc.rizon.net" #hardcoding this for now
-chan = '#fit'
+chan = '#fittest'
 port = 6697 #hardcoding this for now
 nick = 'Zyzz'
 password = 'buddy5' #lets not keep this hardcoded...
@@ -25,12 +23,6 @@ userToKick = ''
 userExists = False
 userHostMask = ''
 inChan = False
-
-def ping():
-	ircsock.send("Pong :pingis\n")
-
-def joinChan(chan):
-	ircsock.send("JOIN " + chan + "\n")
 
 def input(listed):
 	lift = '' #if the values never change, tell the user they misused the syntax
@@ -82,14 +74,24 @@ def pollVote():
 				+ " out of 5 votes needed to ban " + userToKick + "\n")
 
 def sendMessage(message):
-	ircsock.send("PRIVMSG " + chan + " :" + message + "\n")
+	try:
+		ircsock.send("PRIVMSG " + chan + " :" + message + "\n")
+	except TypeError:
+		pass #should log this
+
+def sendCommand(command):
+	try:
+		ircsock.send(command + "\n")
+	except TypeError:
+		pass #should also get logged
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((server, port))
 ircsock = ssl.wrap_socket(s)
 ircsock.send("USER " + nick + " " + nick + " " + nick + " :BPBot\n")
 ircsock.send("NICK " + nick + "\n")
-ircsock.send("NickServ IDENTIFY " + password + "\n")
+sendCommand(irc_commands.identify(nick, password))
+
 
 while inChan is False:
 	line = ircsock.recv(500)
@@ -97,7 +99,7 @@ while inChan is False:
 	print line
 
 	if line.find("see #help.") != -1: #wait until MOTD is complete
-		joinChan(chan)
+		sendCommand(irc_commands.joinChan(chan))
 		inChan = True
 		break
 
@@ -108,18 +110,18 @@ while inChan is True:
 
 	urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', line, re.I | re.S)
 	if urlFinder != None:
-		sendMessage(modules.imports.link.getHTML(urlFinder.group(1)))
+		sendMessage(link.getHTML(urlFinder.group(1)))
 
 	if line.find("PING :") != -1: #respond to Ping requests
-		ping()
+		sendCommand(irc_commands.ping())
 
 	if line.find("PRIVMSG " + nick + " :logoff") != -1: #logoff and close socket connection when given the kill command
-		sendMessage(modules.imports.irc_commands.logoff())
+		sendCommand(irc_commands.logoff('Logging off'))
 		ircsock.close()
 
 	if line.find(":!info") != -1:
 		foodItem = re.split(':!info ', line)
-		sendMessage(modules.imports.nutrition.findNutritionalInfo(foodItem[1].strip('\r\n')))
+		sendMessage(nutrition.findNutritionalInfo(foodItem[1].strip('\r\n')))
 
 	if line.find(":!log") != -1:
 		try:
