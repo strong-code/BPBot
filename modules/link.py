@@ -28,5 +28,5 @@ def headerInfo(url): #grab file size info from header so we don't waste time/ban
 	file = urllib2.urlopen(url)
 	size = file.headers.get("content-length")
 	file.close()
-	fileName = re.search('.+\/(.+)\.jpg)', url).group(1)
+	fileName = re.search('.+\/(.+)\.jpg', url).group(1)
 	return fileName + ' ' + str(int(size)/1024) + 'kB'
