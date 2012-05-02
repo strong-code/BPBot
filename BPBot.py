@@ -13,7 +13,7 @@ from threading import Timer
 from modules.imports import *
 
 server = "irc.rizon.net" #hardcoding this for now
-chan = '#fittest'
+chan = '#fit'
 port = 6697 #hardcoding this for now
 nick = 'Zyzz'
 password = 'buddy5' #lets not keep this hardcoded...

@@ -10,8 +10,7 @@ def getCurrentTrack(user):
 		return urllib2.HTTPerror
 
 	xml = urllib2.urlopen(url).read()
-
 	artist = re.search('<artist.+\">(.+)<\/artist>', xml).group(1)
 	track = re.search('<name>(.+)<\/name>', xml).group(1)
-
+	
 	return 'Currently listening to \'' + track.strip('\r\n') + '\' by ' + artist.strip('\r\n')
