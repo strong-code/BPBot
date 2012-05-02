@@ -25,4 +25,4 @@ def findNutritionalInfo(foodItem):
 
 		return food + ': Serving size ' + servingSize + ' | ' + cals + ' calories | ' + fat + ' of fat | ' + carbs + ' of carbs | ' + protein + ' of protein'
 	except AttributeError:
-		pass
+		return 'No results found for ' + foodItem
