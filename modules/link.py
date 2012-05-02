@@ -28,4 +28,4 @@ def headerInfo(url): #grab file size info from header so we don't waste time/ban
 	file = urllib2.urlopen(url)
 	size = file.headers.get("content-length")
 	file.close()
-	return file.info().gettype() + ' ' + str(int(size)/1024) + 'kB'
+	return str(int(size)/1024) + 'kB'
