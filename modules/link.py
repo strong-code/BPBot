@@ -10,7 +10,7 @@ def parseLink(pagesource):
 	pageTitle = match.group(1).replace('\n', '').replace('\r', '') #strip/clean title before returning
 	if pageTitle == None:
 		pass
-	return 'Site: ' + pageTitle
+	return 'Site: ' + pageTitle.strip('\r\n')
 
 def getHTML(url):
 	try:
