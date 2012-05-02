@@ -13,7 +13,7 @@ from threading import Timer
 from modules.imports import *
 
 server = "irc.rizon.net" #hardcoding this for now
-chan = '#fit'
+chan = '#fittest'
 port = 6697 #hardcoding this for now
 nick = 'Zyzz'
 password = 'buddy5' #lets not keep this hardcoded...
@@ -118,6 +118,10 @@ while inChan is True:
 	if line.find("PRIVMSG " + nick + " :logoff") != -1: #logoff and close socket connection when given the kill command
 		sendCommand(irc_commands.logoff('Logging off'))
 		ircsock.close()
+
+	userSearch = re.search(':!np\s(.+)', line, re.I | re.S)
+	if userSearch != None:
+		sendMessage(lastfm.getCurrentTrack(userSearch.group(1).strip('\r\n')))
 
 	cityReg = re.search(':!weather\s(\d+)', line, re.I | re.S)
 	if cityReg != None:
