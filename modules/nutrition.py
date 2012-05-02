@@ -2,35 +2,27 @@ import HTMLParser, re, urllib2
 
 def findNutritionalInfo(foodItem):
 	'''
+	Uses simple regex to grab the nutritional information from HTML tags
 	Queries against the LiveStrong database to find nutritional information
 	'''
 	
-	query = "http://www.livestrong.com/search/?mode=standard&search="
+	query = 'http://www.livestrong.com/search/?mode=standard&search='
 	foodItems = re.split(" ", foodItem)
 	for l in foodItems:
 		query += l + "+" #append each word of foodItem to the query URL
 
-	result = urllib2.urlopen(query).read()
-	if result.find('<article'):
-		info = result[result.find('<article')+1:result.find('</article>')] #grab the first returned result
-	info = re.split("\w>", info)
-	for i in info:
-		i = re.sub('<[^<]+?>', '', i)
-		i = re.sub('\s+', ' ', i)
-		i = re.sub('[,;]', '', i)
-		i = re.sub('</spa', '', i)
-		i = i.rstrip('\t\r\n\0')
-		nutrinfo = ''
-		
-		if i.find('Serving Size'):
-			nutrinfo += i+ " | "
-		if i.find('Total Fat'):
-			nutrinfo += i + " | "
-		if i.find('Protein'):
-			nutrinfo += i + " | "
-		if i.find('Carbs'):
-			nutrinfo += i + " | "
-		if i.find('Calories'):
-			nutrinfo += i + " | "
+	try:
+		result = urllib2.urlopen(query).read()
+	except urllib2.HTTPerror:
+		return 'Unable to search for ' + foodItem
+	try:	
+		food = re.search('<h2.+><a.+\">(.+)<\/a>', result).group(1)
+		servingSize = re.search('Serving\sSize:\s<span.+\">(.+)<\/span>;', result).group(1)
+		cals = re.search('Calories:\s<span.+\">(.+)<\/span>', result).group(1)
+		fat = re.search('Total\sFat:\s<span.+\">(.+)<\/span>', result).group(1)
+		carbs = re.search('Carbs:\s<span.+\">(.+)<\/span>', result).group(1)
+		protein = re.search('Protein:\s<span.+\">(.+)<\/span>', result).group(1)
 
-	return nutrinfo
+		return food + ': Serving size ' + servingSize + ' | ' + cals + ' calories | ' + fat + ' of fat | ' + carbs + ' of carbs | ' + protein + ' of protein'
+	except AttributeError:
+		pass
