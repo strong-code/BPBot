@@ -21,12 +21,12 @@ def getHTML(url):
 		else:
 			size = headerInfo(url)
 			return pageType + " - " + str(size) + 'kB'
-	except urllib2.URLError, e:
+	except urllib2.URLError:
 		return 'Error parsing page title'
 
 def headerInfo(url): #grab file size info from header so we don't waste time/bandwidth loading it
 	file = urllib2.urlopen(url)
 	size = file.headers.get("content-length")
 	file.close()
-	fileName = re.search('.+\/(.+)\.jpg', url).group(1)
-	return fileName + ' ' + str(int(size)/1024) + 'kB'
+	fileName = re.search('.+\/(.+)\.[(jpg)(jpeg)(gif)(png)]', url).group(1) #get image names
+	return fileName + ' ' + str(int(size)/1024)
