@@ -7,10 +7,13 @@ def getCurrentTrack(user):
 	try:
 		url = _URL_ %(user, _API_KEY_)
 	except urllib2.HTTPerror:
-		return urllib2.HTTPerror
+		return 'Unable to read RSS feed :('
 
-	xml = urllib2.urlopen(url).read()
+	try:
+		xml = urllib2.urlopen(url).read()
+	except:
+		return 'Could not find user'
 	artist = re.search('<artist.+\">(.+)<\/artist>', xml).group(1)
 	track = re.search('<name>(.+)<\/name>', xml).group(1)
 	
-	return 'Currently listening to \'' + track.strip('\r\n') + '\' by ' + artist.strip('\r\n')
+	return 'Currently listening to \'' + track.strip('\r\n') + '\' by ' + artist.strip('\r\n') + ' on Last.fm'
