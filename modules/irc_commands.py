@@ -9,3 +9,9 @@ def ping():
 
 def identify(nick, password):
 	return "NickServ IDENTIFY %s" % password
+
+def setUser(nick):
+	return "USER %s %s %s" + " :BPBot\n" %(nick, nick, nick)
+
+def setNick(nick):
+	return "NICK %s" % nick + '\n'

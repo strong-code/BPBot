@@ -13,7 +13,7 @@ from threading import Timer
 from modules.imports import *
 
 server = "irc.rizon.net" #hardcoding this for now
-chan = '#fit'
+chan = '#fittest'
 port = 6697 #hardcoding this for now
 nick = 'Zyzz'
 password = 'buddy5' #lets not keep this hardcoded...
@@ -85,28 +85,35 @@ def sendCommand(command): #send a command to the server
 	except TypeError:
 		pass #should also get logged
 
+def readLine(socket):
+	line = ''
+	while True:
+		character = socket.recv(1)
+		if (character == '\n' or character == ''):
+			break
+		else:
+			line += character
+
+	return line
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((server, port))
 ircsock = ssl.wrap_socket(s)
-ircsock.send("USER " + nick + " " + nick + " " + nick + " :BPBot\n")
-ircsock.send("NICK " + nick + "\n")
+ircsock.send('USER ' + nick + ' '+ nick + ' ' + nick + ' :BPBot\n')
+ircsock.send(irc_commands.setNick(nick))
 sendCommand(irc_commands.identify(nick, password))
 
-
 while inChan is False:
-	line = ircsock.recv(500)
-	line.strip('\r\n')
+	line = readLine(ircsock)
 	print line
-
 	if line.find("see #help.") != -1: #wait until MOTD is complete
 		sendCommand(irc_commands.joinChan(chan))
 		inChan = True
 		break
 
 while inChan is True:
-	line = ircsock.recv(500)
-	line.strip('\r\n')
-	print line
+	print readLine(ircsock)
+	
 
 	urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', line, re.I | re.S)
 	if urlFinder != None:
@@ -147,7 +154,7 @@ while inChan is True:
 	elif re.search(".+:!vote(?!ban)", line) is not None and activeVote == True:
 		pollVote()
 
-	if line.find(":!voteban") != -1 and activeVote != True:
+	if line.find(":.voteban") != -1 and activeVote != True:
 		try:
 			user = re.split('\s', line)
 			userToKick = user[4]
