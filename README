@@ -2,3 +2,5 @@ BPBot - A helpful IRC robot on Rizon's #fit channel
 ---------------------------------------------------
 
 Placeholder for now, need to finish a lot of things
+
+Currently in the (slow) process of migrating all functions to modules, so BPBot.py will be looking a lot cleaner is the coming days (or weeks?)
