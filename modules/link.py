@@ -19,14 +19,6 @@ def getHTML(url):
 		if (pageType == 'text/html'): #only return a valid mime type
 			return parseLink(page.read(5000))
 		else:
-			size = headerInfo(url)
-			return pageType + " - " + str(size) + 'kB'
+			pass
 	except urllib2.URLError:
-		return 'Error parsing page title'
-
-def headerInfo(url): #grab file size info from header so we don't waste time/bandwidth loading it
-	file = urllib2.urlopen(url)
-	size = file.headers.get("content-length")
-	file.close()
-	fileName = re.search('.+\/(.+)\.[(jpg)(jpeg)(gif)(png)]', url).group(1) #get image names
-	return fileName + ' ' + str(int(size)/1024)
+		return 'Error opening page'
