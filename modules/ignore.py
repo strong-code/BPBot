@@ -1,16 +1,15 @@
 from irc_commands import *
+import re
 
 #Will be used to hold all the users we don't want to respond to
-
 ignoredUsers = []
 
 #checks if a user is currently being ignored via boolean value
 def isIgnored(hostmask):
 	for user in ignoredUsers:
-		if user == hostmask:
+		if re.match('*!*@'+hostmask, user) != -1:
 			return True
-		else:
-		 	return False
+	return False
 
 #add a user to the ignore list by hostmask so it can't be dodged
 #with a nickname change
@@ -32,10 +31,9 @@ def removeUser(hostmask):
 #show all the currently ignored users
 def showList(s):
 	if len(ignoredUsers) == 0:
-		sendMessage(s, 'There are no users on the ignore list')
-		return
+		return 'There are no users on the ignore list'
 	else:
 		list = ''
 		for user in ignoredUsers:
 			list += user + ' '
-		sendMessage(s, 'Current ignore list: ' + list)
+		return 'Current ignore list: ' + str(list)
