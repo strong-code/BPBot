@@ -12,12 +12,12 @@ import ssl, socket, re, sys
 from modules import *
 
 #variables for server connection
-server = irc_settings.server
-chan = irc_settings.chan
-port = irc_settings.port
-nick = irc_settings.nick
-password = irc_settings.password
-SSL = irc_settings.SSL
+server = config.server
+chan = config.chan
+port = config.port
+nick = config.nick
+password = config.password
+SSL = config.SSL
 inChan = False
 
 if SSL is True:

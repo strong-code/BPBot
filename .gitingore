@@ -4,3 +4,7 @@
 
 #not using log for now
 log.txt
+
+#Configuration File#
+####################
+config.py
