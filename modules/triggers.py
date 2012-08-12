@@ -15,11 +15,11 @@ def findTriggers(s, user, type, chan, msg):
 			quit(s, 'Leaving!')
 			return
 		if msg == 'IL':
-			showList(s)
+			sendMessage(s, showList(s))
 			return
 		if re.match('\.iu\s(.*)', str(msg)):
 			hostmask = re.match('\.iu\s(.*)', str(msg)).group(1)
-			ignoreUser(hostmask)
+			sendMessage(s, ignoreUser(hostmask))
 
 #This should be fixed so it send to different parsing functions
 #depending on elements in line[]
@@ -29,7 +29,7 @@ def parseLine(s, currLine):
 		user = line[0]
 		type = line[1]
 		chan = line[2]
-		msg = joinLine(line) #this is hack-y....
+		msg = ' '.join(line[3:])
 		findTriggers(s, user, type, chan, msg[1:])
 	if len(line) == 2: #most likely a ping, or server alert
 		if line[0] == 'PING':
@@ -38,13 +38,3 @@ def parseLine(s, currLine):
 	# There are still a few other types of messages we will get
 	# from the server, but this will be done via trial and error
 	# I guess?
-
-#hack-ish way to rejoin the message, work on this!
-def joinLine(line):
-	msg = ''
-	line[0]=''
-	line[1]=''
-	line[2]=''
-	for part in line:
-		msg += part + ' '
-	return msg.strip()
