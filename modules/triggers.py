@@ -1,6 +1,6 @@
-from irc_commands import *
 from ignore import *
-import re
+from links import *
+from irc_commands import *
 
 _triggers = []
 
@@ -20,6 +20,9 @@ def findTriggers(s, user, type, chan, msg):
 		if re.match('\.iu\s(.*)', str(msg)):
 			hostmask = re.match('\.iu\s(.*)', str(msg)).group(1)
 			sendMessage(s, ignoreUser(hostmask))
+		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
+		if urlFinder:
+			sendMessage(s, isValidPage(urlFinder.group(1)))
 
 #This should be fixed so it send to different parsing functions
 #depending on elements in line[]
