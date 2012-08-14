@@ -7,7 +7,7 @@ ignoredUsers = []
 #checks if a user is currently being ignored via boolean value
 def isIgnored(hostmask):
 	for user in ignoredUsers:
-		if re.match('.*\!.*@%s' % (hostmask), user): #NEEDS TO BE FIXED, GETTING AN ERROR HERE
+		if re.match('.*\!.*@%s' % (hostmask), user):
 			return True
 	return False
 
