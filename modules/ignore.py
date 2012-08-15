@@ -7,7 +7,7 @@ ignoredUsers = []
 #checks if a user is currently being ignored via boolean value
 def isIgnored(hostmask):
 	for user in ignoredUsers:
-		if re.match('.*\!.*@%s' % (hostmask), user):
+		if user == hostmask:
 			return True
 	return False
 
@@ -15,18 +15,18 @@ def isIgnored(hostmask):
 #with a nickname change
 def ignoreUser(hostmask, user):
 	if isIgnored(hostmask):
-		return '%s is already ignored' % user
+		return '%s is already ignored' % hostmask
 	else:
 		ignoredUsers.append(hostmask)
-		return '%s is now being ignored' % user
+		return '%s is now being ignored' % hostmask
 
 #remove a user from the ignore list
 def removeUser(hostmask, user):
 	if isIgnored(hostmask):
 		ignored.remove(hostmask)
-		return '%s is no longer ignored' % user
+		return '%s is no longer ignored' % hostmask
 	else:
-		return '%s is not currently on the ignore list' % user
+		return '%s is not currently on the ignore list' % hostmask
 
 #show all the currently ignored users
 def showList(s):
