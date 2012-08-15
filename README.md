@@ -13,8 +13,8 @@ usage in Rizon's #fit channel, but many of the modules it contains are not fitne
 	* Set SSL boolean to 'True' and change the port accordingly if you wish to use an SSL connection
 
 ```python
-server = 'server address'
-chan = '#channel name'
+server = 'server.address.here'
+chan = '#ChannelName'
 port = [port number]
 nick = 'Nickname'
 password = 'password'
