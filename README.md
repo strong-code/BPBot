@@ -12,12 +12,11 @@ usage in Rizon's #fit channel, but many of the modules it contains are not fitne
 * Open config.py and fill in the necessary values
 	* Set SSL boolean to 'True' and change the port accordingly if you wish to use an SSL connection
 	```python
-	server = 'server address'
-	chan = '#channel name'
-	port = [port number]
-	nick = 'Nickname'
-	password = 'password'
-	SSL = [True/False]
-	```
+    server = 'server address'
+    chan = '#channel name'
+    port = [port number]
+    nick = 'Nickname'
+    password = 'password'
+    SSL = [True/False]```
 
 * Run BPBot.py and enjoy!
