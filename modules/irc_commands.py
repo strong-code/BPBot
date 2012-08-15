@@ -1,10 +1,10 @@
 import time
-from modules import irc_settings
+from modules import config
 
 #some variables we will need
-chan = irc_settings.chan
-nick = irc_settings.nick
-password = irc_settings.password
+chan = config.chan
+nick = config.nick
+password = config.password
 holder = []
 buffer = ''
 
