@@ -5,7 +5,7 @@ _triggers = []
 #cycle through all triggers and, if loaded, deliver the
 #appropriate response to the chan
 def findTriggers(s, user, nick, hostmask, type, chan, msg):
-	if isIgnored(user):
+	if isIgnored(hostmask):
 		return #don't check for triggers from ignored users
 	else:
 		print '<<< MSG IS: ' + str(msg)
@@ -28,7 +28,7 @@ def parseLine(s, currLine):
 	if len(line) >= 4 and line[1] == 'PRIVMSG': #user message to channel
 		user = line[0]
 		nick = getNick(user)
-		hostmask = getNick(user)
+		hostmask = getHostmask(user)
 		type = line[1]
 		chan = line[2]
 		msg = ' '.join(line[3:])
@@ -36,16 +36,6 @@ def parseLine(s, currLine):
 	if len(line) == 2: #most likely a ping, or server alert
 		if line[0] == 'PING':
 			pong(s)
-
-#simple function to get JUST the nickname of a user from *!*@* format
-def getNick(user):
-	nick = re.match('(.*)!(~)?.*@.*', user)
-	return nick.group(1)[1:]
-
-#simple function to get JUST the hostmask of a user from *!*@* format
-def getHostmask(user):
-	hostmask = re.match('.*!(~)?.*@(.*)', user)
-	return hostmask.group(1)
 
 	# There are still a few other types of messages we will get
 	# from the server, but this will be done via trial and error
