@@ -9,19 +9,14 @@ usage in Rizon's #fit channel, but many of the modules it contains are not fitne
 ##How do I use it?
 ==================
 * Download the repo
-* Open config.py and fill in the necessary values
+* Open config.py and fill in the necessary values below
 	* Set SSL boolean to 'True' and change the port accordingly if you wish to use an SSL connection
 
 ```server = 'server address'```
-
 ```chan = '#channel name'```
-
 ```port = [port number]```
-
 ```nick = 'Nickname'```
-
 ```password = 'password'```
-
 ```SSL = [True/False]```
 
 * Run BPBot.py and enjoy!
