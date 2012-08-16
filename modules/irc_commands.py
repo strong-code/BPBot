@@ -28,12 +28,15 @@ def ghost(s):
 #Could be a LOT better
 def quit(s, reason):
 	sendMessage(s, reason)
-	time.sleep(1)
 	s.close()
 
 #respond to PING requests
 def pong(s):
 	s.sendall("PONG :pingis")
+
+#join channels we are invited to
+def acceptInvite(s, inviteChan):
+	s.sendall('JOIN %s \n' % inviteChan)
 
 #use SSL connection
 def wrapSSL(socket, nick, password, server):
@@ -54,5 +57,5 @@ def readLine(s):
 
 #sends a message to broadcast to the entire current channel
 def sendMessage(s, message):
-	message.strip('\n\r')
+	message.rstrip()
 	s.sendall('PRIVMSG ' + chan + ' :' + message + '\n')
