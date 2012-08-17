@@ -12,9 +12,12 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if type == 'INVITE':
 			acceptInvite(msg[1:])
 			return
-		if msg == 'quit' and nick == 'BradPitt':
+		if msg == 'quit' and nick == 'BradPitt': #this should be changed to some admin module
 			quit(s, 'Leaving!')
 			return
+		if re.match('.w\s(.*)', str(msg)):
+			loc = re.match('.w\s(.*)', str(msg)).group(1)
+			sendMessage(s, currWeather(loc))
 		if msg == 'IL':
 			sendMessage(s, showList(s))
 			return
@@ -44,7 +47,3 @@ def parseLine(s, currLine):
 				pong(s)
 	except IndexError:
 		pass
-
-	# There are still a few other types of messages we will get
-	# from the server, but this will be done via trial and error
-	# I guess?

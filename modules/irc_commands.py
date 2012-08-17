@@ -1,4 +1,3 @@
-import time
 from modules import config
 
 #some variables we will need
