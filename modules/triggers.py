@@ -15,8 +15,8 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msg == 'quit' and nick == 'BradPitt': #this should be changed to some admin module
 			quit(s, 'Leaving!')
 			return
-		if re.match('.w\s(.*)', str(msg)):
-			loc = re.match('.w\s(.*)', str(msg)).group(1)
+		if re.match('\.w\s(.*)', str(msg)):
+			loc = re.match('\.w\s(.*)', str(msg)).group(1)
 			sendMessage(s, currWeather(loc))
 		if msg == 'IL':
 			sendMessage(s, showList(s))
@@ -27,6 +27,9 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
 		if urlFinder != None:
 			sendMessage(s, isValidPage(urlFinder.group(1)))
+		dFinder = re.search('(\.d.*)', str(msg))
+		if dFinder != None:
+			sendMessage(s, decide(str(msg)))
 
 #split the line into logical parts
 def parseLine(s, currLine):
