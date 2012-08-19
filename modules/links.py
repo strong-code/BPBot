@@ -5,10 +5,10 @@ os.environ['http_proxy']='' #this is needed for proxy problems
 #parse the link assuming it is valid
 def parseLink(pagesource):
 	match = re.search('<title>(.*)<\/title>', pagesource, re.I | re.S)
-	if match == None:
-		return 'Unable to parse page title'
-	else:
+	if match != None:
 		return match.group(1)
+	else:
+		return 'Unable to parse page title'
 
 def isValidPage(url):
 	try:
@@ -17,7 +17,7 @@ def isValidPage(url):
 		if pageType == 'text/html':
 			return parseLink(page.read(5000))
 		else:
-			return False
+			pass
 	except urllib2.URLError:
 		#should log this as an error opening page
 		return 'Error opening page'
