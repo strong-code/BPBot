@@ -57,7 +57,7 @@ def readLine(s):
 #sends a message to broadcast to the entire current channel
 def sendMessage(s, message):
 	try:
-		message.rstrip()
+		message.strip()
 		s.sendall('PRIVMSG ' + chan + ' :' + message + '\n')
 	except AttributeError:
 		#if somehow something else gets through
