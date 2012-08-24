@@ -12,3 +12,7 @@ config.py
 #Test File#
 ###########
 test.py
+
+#Database File#
+###############
+*.db
