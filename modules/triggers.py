@@ -12,6 +12,10 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if type == 'INVITE':
 			acceptInvite(msg[1:])
 			return
+		# if msg[0] == ' .getmax':
+		# 	sendMessage(s, return1RM(nick, msg[1].strip()))
+		# if msg[0] == ' .rm':
+		# 	insert1RM(nick, msg[1].strip(), msg[2].strip())
 		if msg == 'quit' and nick == 'BradPitt': #this should be changed to some admin module
 			quit(s, 'Leaving!')
 			return
