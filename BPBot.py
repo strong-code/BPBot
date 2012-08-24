@@ -30,6 +30,8 @@ s.sendall('USER ' + nick + ' '+ nick + ' ' + nick + ' :BPBot\n')
 setNick(s)
 identify(s)
 
+setUp()
+
 #Receive input until we are in the channel
 while inChan is False:
 	line = readLine(s)
