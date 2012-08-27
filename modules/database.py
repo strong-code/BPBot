@@ -13,8 +13,6 @@ def setUp():
 	return True
 
 def insert1RM(user, lift, weight):
-	#insertion = [for tup in zip(user, lift, weight)]
-
 	try:
 		connection = sql.connect('BPBot.db')
 
