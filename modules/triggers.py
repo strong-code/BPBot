@@ -5,18 +5,22 @@ _triggers = []
 #cycle through all triggers and, if loaded, deliver the
 #appropriate response to the chan
 def findTriggers(s, user, nick, hostmask, type, chan, msg):
+	msgList = msg.split() #this will help with finding triggers
 	if isIgnored(hostmask):
 		return #don't check for triggers from ignored users
 	else:
-		print '<<< MSG IS: ' + str(msg)
+		# print '<<< MSG IS: ' + str(msg)
+		print '<<<MSG[0] IS: ' + msgList[0]
 		if type == 'INVITE':
 			acceptInvite(msg[1:])
 			return
+		if msgList[0] == '.quote':
+			sendMessage(s, searchLog(' '.join(msgList[1:])))
 		# if msg[0] == ' .getmax':
 		# 	sendMessage(s, return1RM(nick, msg[1].strip()))
 		# if msg[0] == ' .rm':
 		# 	insert1RM(nick, msg[1].strip(), msg[2].strip())
-		if msg == 'quit' and nick == 'BradPitt': #this should be changed to some admin module
+		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
 			quit(s, 'Leaving!')
 			return
 		if re.match('\.w\s(.*)', str(msg)):
@@ -47,6 +51,8 @@ def parseLine(s, currLine):
 			chan = line[2]
 			msg = ' '.join(line[3:])
 			findTriggers(s, user, nick, hostmask, type, chan, msg[1:])
+			if logging:
+				writeToLog(nick + ' said: ' + msg[1:])
 		if line[1] == 'INVITE':
 			acceptInvite(s, line[3][1:])
 		if len(line) == 2: #most likely a ping, or server alert
