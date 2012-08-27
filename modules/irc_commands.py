@@ -1,5 +1,5 @@
 from modules import config
-import log
+import os
 
 #some variables we will need
 chan = config.chan
@@ -29,7 +29,6 @@ def ghost(s):
 #Could be a LOT better
 def quit(s, reason):
 	sendMessage(s, reason)
-	#log.closeLog()
 	s.close()
 
 #respond to PING requests
@@ -52,6 +51,11 @@ def isAdmin(nick):
 		if user == nick:
 			return True
 	return False
+
+#Reload yourself if asked to be updated
+def reloadSelf(s):
+	quit(s, 'BRB updating...')
+	os.execl('.\BPBot.py', '')
 
 #parse the input line by line
 #TODO: separate by type, sender, hostmask, etc
