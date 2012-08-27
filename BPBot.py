@@ -20,7 +20,7 @@ password = config.password
 SSL = config.SSL
 inChan = False
 
-if SSL is True:
+if SSL:
 	s = wrapSSL(s)
 else: #create the network socket and connect
 	s = socket.socket()
@@ -30,10 +30,10 @@ s.sendall('USER ' + nick + ' '+ nick + ' ' + nick + ' :BPBot\n')
 setNick(s)
 identify(s)
 
-setUp()
+setUp()#do database setup
 
 #Receive input until we are in the channel
-while inChan is False:
+while not inChan:
 	line = readLine(s)
 	print line
 	line = line.split() #parse the line for codes
@@ -55,7 +55,7 @@ while inChan is False:
 	except IndexError:
 		pass
 
-while inChan is True:
+while inChan:
 	line = readLine(s)
 	print line
 	parseLine(s, line)
