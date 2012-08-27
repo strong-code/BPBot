@@ -12,7 +12,7 @@ config.py
 #Test Files#
 ###########
 test.py
-log.py
+chanlog.py
 
 #Database File#
 ###############
