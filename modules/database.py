@@ -8,7 +8,6 @@ def setUp():
 	with connection:
 		cur = connection.cursor()
 		cur.execute('CREATE TABLE IF NOT EXISTS RepMax(User TEXT PRIMARY KEY NOT NULL, Lift TEXT NOT NULL, Weight TEXT NOT NULL)')
-		print '>>>SUCCESS. TABLE CREATED!'
 	connection.commit()
 	connection.close()
 	return True
