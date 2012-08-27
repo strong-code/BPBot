@@ -13,7 +13,7 @@ def isIgnored(hostmask):
 
 #add a user to the ignore list by hostmask so it can't be dodged
 #with a nickname change
-def ignoreUser(hostmask, user):
+def ignoreUser(hostmask):
 	if isIgnored(hostmask):
 		return '%s is already ignored' % hostmask
 	else:
