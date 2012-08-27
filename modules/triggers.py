@@ -15,25 +15,31 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 			return
 		if msgList[0] == '.quote':
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
+
 		# if msg[0] == ' .getmax':
 		# 	sendMessage(s, return1RM(nick, msg[1].strip()))
 		# if msg[0] == ' .rm':
 		# 	insert1RM(nick, msg[1].strip(), msg[2].strip())
+
 		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
 			quit(s, 'Leaving!')
-			return
-		if re.match('\.w\s(.*)', str(msg)):
-			loc = re.match('\.w\s(.*)', str(msg)).group(1)
-			sendMessage(s, currWeather(loc))
-		if msg == 'IL':
+
+		if msgList[0] == '.w':
+			sendMessage(s, currWeather(' '.join(msgList[1:])))
+
+		if msgList[0] == '.update' and isAdmin(nick):
+			reloadSelf(s)
+
+		if msgList[0] == 'IL':
 			sendMessage(s, showList(s))
-			return
-		if re.match('\.iu\s(.*)', str(msg)):
-			host = re.match('\.iu\s(.*)', str(msg)).group(1)
-			sendMessage(s, ignoreUser(host, nick))
+
+		if msgList[0] == '.iu' and isAdmin(nick):
+			sendMessage(s, ignoreUser(' '.join(msgList[1:])))
+
 		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
 		if urlFinder != None:
 			sendMessage(s, isValidPage(urlFinder.group(1)))
+
 		if msgList[0] == '.d':
 			sendMessage(s, decide(str(msg)))
 
