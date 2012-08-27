@@ -10,7 +10,6 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		return #don't check for triggers from ignored users
 	else:
 		# print '<<< MSG IS: ' + str(msg)
-		print '<<<MSG[0] IS: ' + msgList[0]
 		if type == 'INVITE':
 			acceptInvite(msg[1:])
 			return
