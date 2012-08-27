@@ -9,9 +9,10 @@ log.txt
 ####################
 config.py
 
-#Test File#
+#Test Files#
 ###########
 test.py
+log.py
 
 #Database File#
 ###############
