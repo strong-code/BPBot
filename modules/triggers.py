@@ -34,8 +34,7 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
 		if urlFinder != None:
 			sendMessage(s, isValidPage(urlFinder.group(1)))
-		dFinder = re.search('(\.d.*)', str(msg))
-		if dFinder != None:
+		if msgList[0] == '.d':
 			sendMessage(s, decide(str(msg)))
 
 #split the line into logical parts
