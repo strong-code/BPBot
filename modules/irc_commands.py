@@ -1,4 +1,5 @@
 from modules import config
+import log
 
 #some variables we will need
 chan = config.chan
@@ -6,6 +7,7 @@ nick = config.nick
 password = config.password
 holder = []
 buffer = ''
+admins = config.admins
 
 #join chan
 def joinChan(s):
@@ -27,6 +29,7 @@ def ghost(s):
 #Could be a LOT better
 def quit(s, reason):
 	sendMessage(s, reason)
+	#log.closeLog()
 	s.close()
 
 #respond to PING requests
@@ -43,6 +46,13 @@ def wrapSSL(socket, nick, password, server):
 	ircsock = ssl.wrap_socket(socket)
 	return ircsock
 
+#Check if a user is admin (for BPBot, not the chan)
+def isAdmin(nick):
+	for user in admins:
+		if user == nick:
+			return True
+	return False
+
 #parse the input line by line
 #TODO: separate by type, sender, hostmask, etc
 def readLine(s):
@@ -50,7 +60,10 @@ def readLine(s):
 	global buffer
 	while True:
 		if len(holder) > 0: #if we have items in buffer, pop and return
-			return holder.pop(0)
+			if holder[0] == '\n': #remove/pop blank lines
+				holder.pop(0)
+			else:
+				return holder.pop(0)
 		buffer = s.recv(1024) #buffer the input
 		holder = buffer.split("\n") #split on newline
 
