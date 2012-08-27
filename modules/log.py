@@ -21,7 +21,7 @@ def searchLog(query):
 	chanlog = open('chanlog.txt', 'r')
 	quoteBuffer = []
 
-	for line in chanlog.xreadlines():
+	for line in chanlog:
 		if query in line and not '.quote' in line: #quoting quote searches is redundant
 			quoteBuffer.append(line.strip('\r\n\t'))
 	chanlog.close()
