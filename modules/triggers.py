@@ -16,10 +16,10 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote':
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
-		# if msg[0] == ' .getmax':
-		# 	sendMessage(s, return1RM(nick, msg[1].strip()))
-		# if msg[0] == ' .rm':
-		# 	insert1RM(nick, msg[1].strip(), msg[2].strip())
+		if msg[0] == '.getmax':
+			sendMessage(s, return1RM(msgList[1], msgList[2]))
+		if msg[0] == '.rm':
+			insert1RM(nick, msgList[1], msgList[2])
 
 		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
 			quit(s, 'Leaving!')
@@ -32,6 +32,9 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 
 		if msgList[0] == 'IL':
 			sendMessage(s, showList(s))
+
+		if msgList[0] == '.logsize':
+			sendMessage(s, getLogSize())
 
 		if msgList[0] == '.iu' and isAdmin(nick):
 			sendMessage(s, ignoreUser(' '.join(msgList[1:])))

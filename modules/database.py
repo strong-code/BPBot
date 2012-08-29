@@ -29,6 +29,7 @@ def insert1RM(user, lift, weight):
 		return False
 
 def return1RM(user, lift):
+	weight = ''
 	try:
 		connection = sql.connect('BPBot.db')
 
@@ -36,10 +37,10 @@ def return1RM(user, lift):
 			cur = connection.cursor()
 			cur.execute('SELECT Weight FROM RepMax WHERE User = (?) AND WHERE Lift = (?) LIMIT 1', user, lift)
 			for row in rows:
-				return str(row)
+				weight = str(row)
 		connection.commit()
 		connection.close()
-		return True
+		return user + ' has a 1RM ' + lift + ' of ' + weight
 
 	except:
 		return False
