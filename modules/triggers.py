@@ -1,4 +1,5 @@
 from __init__ import *
+from random import choice
 
 _triggers = []
 
@@ -15,6 +16,11 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 			return
 		if msgList[0] == '.quote':
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
+
+		rudeMessages = ['fuck you', 'fuck off', 'fat', 'loser', 'shut up']
+		rudeResponse = ['rude ^', 'rude!', 'rude~', '100% rude']
+		if any(x in msg for x in rudeMessages):
+			sendMessage(s, choice(rudeResponse))
 
 		if msgList[0] == '.getmax':
 			sendMessage(s, return1RM(msgList[1], msgList[2]))
