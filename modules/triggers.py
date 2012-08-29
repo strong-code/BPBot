@@ -16,10 +16,11 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote':
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
-		if msg[0] == '.getmax':
+		if msgList[0] == '.getmax':
 			sendMessage(s, return1RM(msgList[1], msgList[2]))
-		if msg[0] == '.rm':
-			insert1RM(nick, msgList[1], msgList[2])
+
+		if msgList[0] == '.rm':
+			sendMessage(s, insert1RM(nick, msgList[1], msgList[2]))
 
 		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
 			quit(s, 'Leaving!')
