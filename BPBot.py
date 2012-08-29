@@ -30,7 +30,8 @@ s.sendall('USER ' + nick + ' '+ nick + ' ' + nick + ' :BPBot\n')
 setNick(s)
 identify(s)
 
-setUp()#do database setup
+if not setUp():#do database setup
+	print '>>>Problem setting up database!'
 
 #Receive input until we are in the channel
 while not inChan:
