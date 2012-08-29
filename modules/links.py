@@ -6,7 +6,7 @@ os.environ['http_proxy']='' #this is needed for proxy problems
 def parseLink(pagesource):
 	match = re.search('<title>(.*)<\/title>', pagesource, re.I | re.S)
 	if match != None:
-		return match.group(1)
+		return 'Page Title: ' + match.group(1)
 	else:
 		return 'Unable to parse page title'
 

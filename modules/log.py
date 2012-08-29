@@ -3,6 +3,7 @@
 
 from random import choice
 from time import strftime
+import os
 
 #write to our log file
 def writeToLog(line):
@@ -32,3 +33,8 @@ def searchLog(query):
 		return '[Quote 1 of ' + str(len(quoteBuffer)) + '] ' + choice(quoteBuffer)
 	else:
 		return 'No matches found for \'' + query + '\''
+
+#Return the current size of chanlog.txt
+def getLogSize():
+	print 'got called!'
+	return str(float(os.path.getsize('chanlog.txt')) / 1024) + 'KB'
