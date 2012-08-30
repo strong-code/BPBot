@@ -17,6 +17,10 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote':
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
+		zumbaResponse('THE BEST WAY TO TONE UP', 'WELCOME TO THE TONEZONE BABY', 'FEEL IT IN YOUR HIPS, GIRL', 'BURNING UP THOSE CALORIES!', 'NOW WITH 100% MORE HIPS', 'DANCE YOUR SHAME AWAY', 'CARDIO\'S FINEST HOUR')
+		if 'zumba' in msg:
+			sendMessage(s, choice(zumbaResponse))
+
 		rudeMessages = ['fuck you', 'fuck off', 'fat', 'loser', 'shut up']
 		rudeResponse = ['rude ^', 'rude!', 'rude~', '100% rude']
 		if any(x in msg for x in rudeMessages):
