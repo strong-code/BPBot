@@ -1,14 +1,13 @@
-import re, urllib2, HTMLParser, os
+import urllib2, HTMLParser, os
 
 os.environ['http_proxy']='' #this is needed for proxy problems
 
 #parse the link assuming it is valid
 def parseLink(pagesource):
-	match = re.search('<title>(.*)<\/title>', pagesource, re.I | re.S)
-	if match != None:
-		return 'Page Title: ' + match.group(1)
-	else:
-		return 'Unable to parse page title'
+	try:
+		return 'Page Title: ' + pagesource.split('<title>')[1].split('</title>')[0].strip()
+	except:
+		return 'Page title not found!'
 
 def isValidPage(url):
 	try:
