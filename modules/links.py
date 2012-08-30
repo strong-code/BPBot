@@ -11,12 +11,14 @@ def parseLink(pagesource):
 
 def isValidPage(url):
 	try:
-		page = urllib2.urlopen(url)
+		#cheat our way past robots.txt that block us
+		req = urllib2.Request(url, headers='User-Agent' : "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"})
+		page = urllib2.urlopen(req)
 		pageType = page.info().gettype()
 		if pageType == 'text/html':
 			return parseLink(page.read(5000))
 		else:
-			pass
+			return
 	except urllib2.URLError:
 		#should log this as an error opening page
 		return 'Error opening page'
