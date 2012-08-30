@@ -12,7 +12,7 @@ def parseLink(pagesource):
 def isValidPage(url):
 	try:
 		#cheat our way past robots.txt that block us
-		req = urllib2.Request(url, headers='User-Agent' : "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"})
+		req = urllib2.Request(url, headers={'User-Agent' : "Mozilla/5.0 (Windows NT 6.1; rv:15.0) Gecko/20120716 Firefox/15.0a2"})
 		page = urllib2.urlopen(req)
 		pageType = page.info().gettype()
 		if pageType == 'text/html':
