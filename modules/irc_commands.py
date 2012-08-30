@@ -33,7 +33,7 @@ def quit(s, reason):
 
 #respond to PING requests
 def pong(s):
-	s.sendall("PONG :pingis")
+	s.sendall("PONG :pingis \n")
 
 #join channels we are invited to
 def acceptInvite(s, inviteChan):
