@@ -22,7 +22,7 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if 'zumba' in msg:
 			sendMessage(s, choice(zumbaResponse))
 
-		rudeMessages = ['fuck you', 'fuck off', 'fat', 'loser', 'shut up']
+		rudeMessages = ['fuck you', 'fuck off', 'fat ', 'loser', 'shut up']
 		rudeResponse = ['rude ^', 'rude!', 'rude~', '100% rude']
 		if any(x in msg for x in rudeMessages):
 			sendMessage(s, choice(rudeResponse))
