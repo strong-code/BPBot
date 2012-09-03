@@ -19,6 +19,6 @@ def isValidPage(url):
 			return parseLink(page.read(5000))
 		else:
 			return
-	except urllib2.URLError:
+	except:
 		#should log this as an error opening page
 		return 'Error opening page'
