@@ -36,5 +36,5 @@ def searchLog(query):
 
 #Return the current size of chanlog.txt
 def getLogSize():
-	print 'got called!'
-	return str(float(os.path.getsize('chanlog.txt')) / 1024) + 'KB'
+	size = float(os.path.getsize('chanlog.txt')) / 1024
+	return ('%.2f' % round(size, 2)) + 'KB'
