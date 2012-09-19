@@ -16,7 +16,7 @@ def isValidPage(url):
 		page = urllib2.urlopen(req)
 		pageType = page.info().gettype()
 		if pageType == 'text/html':
-			return parseLink(page.read(5000))
+			return parseLink(page.read(5000).lower())
 		else:
 			return
 	except:
