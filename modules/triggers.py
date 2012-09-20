@@ -1,5 +1,6 @@
 from __init__ import *
 from random import choice
+import trigger_booleans
 
 _triggers = []
 
@@ -13,18 +14,21 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		# print '<<< MSG IS: ' + str(msg)
 		if type == 'INVITE':
 			acceptInvite(msg[1:])
-			return
-		if msgList[0] == '.quote':
+
+		if msgList[0] == '.trigger' and isAdmin(nick):
+			sendMessage(s, toggleTrigger(msgList[1]))
+
+		if msgList[0] == '.quote' and trigger_booleans.quote:
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
 		zumbaResponse = ['THE BEST WAY TO TONE UP', 'WELCOME TO THE TONEZONE BABY', 'FEEL IT IN YOUR HIPS, GIRL', 'BURNING UP THOSE CALORIES!',
 						'NOW WITH 100% MORE HIPS', 'DANCE YOUR SHAME AWAY', 'CARDIO\'S FINEST HOUR']
-		if 'zumba' in msg:
+		if 'zumba' in msg and trigger_booleas.zumba:
 			sendMessage(s, choice(zumbaResponse))
 
 		rudeMessages = ['fuck you', 'fuck off', 'fat ', 'loser', 'shut up']
 		rudeResponse = ['rude ^', 'rude!', 'rude~', '100% rude']
-		if any(x in msg for x in rudeMessages):
+		if any(x in msg for x in rudeMessages) and trigger_booleans.rude:
 			sendMessage(s, choice(rudeResponse))
 
 		if msgList[0] == '.getmax':
@@ -36,7 +40,7 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
 			quit(s, 'Leaving!')
 
-		if msgList[0] == '.w':
+		if msgList[0] == '.w' and trigger_booleans.weather:
 			sendMessage(s, currWeather(' '.join(msgList[1:])))
 
 		if msgList[0] == '.update' and isAdmin(nick):
@@ -52,10 +56,10 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 			sendMessage(s, ignoreUser(' '.join(msgList[1:])))
 
 		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
-		if urlFinder != None:
+		if urlFinder != None and trigger_booleans.links:
 			sendMessage(s, isValidPage(urlFinder.group(1)))
 
-		if msgList[0] == '.d':
+		if msgList[0] == '.d' and trigger_booleans.decision:
 			sendMessage(s, decide(str(msg)))
 
 #split the line into logical parts
