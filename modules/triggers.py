@@ -23,7 +23,7 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 
 		zumbaResponse = ['THE BEST WAY TO TONE UP', 'WELCOME TO THE TONEZONE BABY', 'FEEL IT IN YOUR HIPS, GIRL', 'BURNING UP THOSE CALORIES!',
 						'NOW WITH 100% MORE HIPS', 'DANCE YOUR SHAME AWAY', 'CARDIO\'S FINEST HOUR']
-		if 'zumba' in msg and trigger_booleas.zumba:
+		if 'zumba' in msg and trigger_booleans.zumba:
 			sendMessage(s, choice(zumbaResponse))
 
 		rudeMessages = ['fuck you', 'fuck off', 'fat ', 'loser', 'shut up']
