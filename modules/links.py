@@ -8,7 +8,7 @@ def parseLink(pagesource):
 	try:
 		h = HTMLParser.HTMLParser()
 		title = titleSearch.search(pagesource).group(1)
-		return 'Page Title: ' + h.unescape(title)
+		return 'Page Title: ' + h.unescape(title).encode("utf-8")
 	except:
 		return 'Page title not found!'
 
