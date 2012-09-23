@@ -1,9 +1,13 @@
+
+
 decision = True
 links = True
 quote = True
 weather = True
 zumba = True
 rude = True
+markov = True
+
 
 def toggleTrigger(triggerName):
 	global decision
@@ -12,6 +16,7 @@ def toggleTrigger(triggerName):
 	global weather
 	global zumba
 	global rude
+	global markov
 
 	if triggerName == 'decision':
 		print '>>>DECIDE IS SET TO ' + str(decision)
@@ -56,5 +61,12 @@ def toggleTrigger(triggerName):
 		else:
 			rude = True
 			return 'Rude trigger is enabled'
+	elif triggerName == 'markov':
+		if markov:
+			markov = False
+			return 'Markov trigger is disabled'
+		else:
+			markov = True
+			return 'Markov trigger is enabled'
 	else:
 		return 'Incorrect trigger name, did you spell that correctly?'
