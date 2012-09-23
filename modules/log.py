@@ -1,6 +1,3 @@
-#THIS IS A TESTING FILE ONLY
-#To see if logging/grepping from a log text file is viable
-
 from random import choice
 from time import strftime
 import os
