@@ -21,6 +21,12 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote' and trigger_booleans.quote:
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
+		if msg == config.nick and trigger_booleans.markov:
+			sendMessage(s, nameCall())
+
+		if msgList[0] == config.nick and msgList[1] is not None:
+			sendMessage(s, markovResponse(msgList[1]))
+
 		zumbaResponse = ['THE BEST WAY TO TONE UP', 'WELCOME TO THE TONEZONE BABY', 'FEEL IT IN YOUR HIPS, GIRL', 'BURNING UP THOSE CALORIES!',
 						'NOW WITH 100% MORE HIPS', 'DANCE YOUR SHAME AWAY', 'CARDIO\'S FINEST HOUR']
 		if 'zumba' in msg and trigger_booleans.zumba:
