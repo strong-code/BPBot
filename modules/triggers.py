@@ -21,11 +21,13 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote' and trigger_booleans.quote:
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
-		if msg == config.nick and trigger_booleans.markov:
+		if config.nick in msg and trigger_booleans.response:
 			sendMessage(s, nameCall())
 
-		if msgList[0] == config.nick and msgList[1] is not None:
-			sendMessage(s, markovResponse(msgList[1]))
+		units = ['kg', 'lb']
+		for x in msgList:
+			if any(weight in x for weight in units) and trigger_booleans.conversion:
+				sendMessage(s, convert(x))
 
 		zumbaResponse = ['THE BEST WAY TO TONE UP', 'WELCOME TO THE TONEZONE BABY', 'FEEL IT IN YOUR HIPS, GIRL', 'BURNING UP THOSE CALORIES!',
 						'NOW WITH 100% MORE HIPS', 'DANCE YOUR SHAME AWAY', 'CARDIO\'S FINEST HOUR']
@@ -37,13 +39,13 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if any(x in msg for x in rudeMessages) and trigger_booleans.rude:
 			sendMessage(s, choice(rudeResponse))
 
-		if msgList[0] == '.getmax':
-			sendMessage(s, return1RM(msgList[1], msgList[2]))
+		# if msgList[0] == '.getmax':
+		# 	sendMessage(s, return1RM(msgList[1], msgList[2]))
 
-		if msgList[0] == '.rm':
-			sendMessage(s, insert1RM(nick, msgList[1], msgList[2]))
+		# if msgList[0] == '.rm':
+		# 	sendMessage(s, insert1RM(nick, msgList[1], msgList[2]))
 
-		if msg == 'quit' and isAdmin(nick): #this should be changed to some admin module
+		if msg == 'quit' and isAdmin(nick):
 			quit(s, 'Leaving!')
 
 		if msgList[0] == '.w' and trigger_booleans.weather:
