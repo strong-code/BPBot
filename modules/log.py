@@ -35,3 +35,11 @@ def searchLog(query):
 def getLogSize():
 	size = float(os.path.getsize('chanlog.txt')) / 1024
 	return ('%.2f' % round(size, 2)) + 'KB'
+
+def totalLines():
+	total = 0
+	chanlog = open('chanlog.txt', 'r')
+	for line in chanlog:
+		total += 1
+	chanlog.close()
+	return total
