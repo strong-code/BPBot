@@ -21,7 +21,7 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if msgList[0] == '.quote' and trigger_booleans.quote:
 			sendMessage(s, searchLog(' '.join(msgList[1:])))
 
-		if config.nick in msg and trigger_booleans.response:
+		if config.nick.lower() in msg.lower() and trigger_booleans.response:
 			sendMessage(s, nameCall())
 
 		units = ['kg', 'lb']
