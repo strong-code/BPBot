@@ -24,6 +24,9 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 		if config.nick.lower() in msg.lower() and trigger_booleans.response:
 			sendMessage(s, nameCall())
 
+		if msgList[0] == '.stats' and isAdmin(nick):
+			sendMessage(s, showStatus())
+
 		units = ['kg', 'lb']
 		for x in msgList:
 			if any(weight in x for weight in units) and trigger_booleans.conversion:
