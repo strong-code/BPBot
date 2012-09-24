@@ -8,7 +8,7 @@ _triggers = []
 #appropriate response to the chan
 def findTriggers(s, user, nick, hostmask, type, chan, msg):
 	msgList = msg.split() #this will help with finding triggers
-	if isIgnored(hostmask):
+	if isIgnored(nick):
 		return #don't check for triggers from ignored users
 	else:
 		# print '<<< MSG IS: ' + str(msg)
@@ -62,6 +62,9 @@ def findTriggers(s, user, nick, hostmask, type, chan, msg):
 
 		if msgList[0] == '.iu' and isAdmin(nick):
 			sendMessage(s, ignoreUser(' '.join(msgList[1:])))
+
+		if msgList[0] == '.ui' and isAdmin(nick):
+			sendMessage(s, removeUser(' '.join(msgList[1:])))
 
 		urlFinder = re.search('(http(s)?://([^/#\s]+)[^#\s]*)(#|\\b)', msg, re.I | re.S)
 		if urlFinder != None and trigger_booleans.links:
