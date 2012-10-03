@@ -15,6 +15,8 @@ def closeLog():
 	chanlog.close()
 
 #search and return the keyword(s)
+#Courtesy of Blice
+querylog = {}
 def searchLog(query):
 	chanlog = open('chanlog.txt', 'r')
 	quoteBuffer = []
@@ -24,12 +26,16 @@ def searchLog(query):
 			quoteBuffer.append(line.strip('\r\n\t'))
 	chanlog.close()
 
-	if len(quoteBuffer) == 1:
-		return quoteBuffer[0]
-	elif len(quoteBuffer) > 1:
-		return '[Quote 1 of ' + str(len(quoteBuffer)) + '] ' + choice(quoteBuffer)
-	else:
+	if not quoteBuffer:
 		return 'No matches found for \'' + query + '\''
+	if not query in querylog or querylog[query] >= len(quoteBuffer):
+		querylog[query] = -1
+
+	querylog[query] += 1
+
+	if len(quoteBuffer) > 1:
+		return '[Quote %d of %d] %s' % (querylog[query]+1, len(quoteBuffer), quoteBuffer[querylog[query]])
+	return quoteBuffer[0]
 
 #Return the current size of chanlog.txt
 def getLogSize():
