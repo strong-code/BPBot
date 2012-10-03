@@ -3,7 +3,7 @@
 *.pyc
 
 #not using log for now
-log.txt
+chanlog.txt
 
 #Configuration File#
 ####################
