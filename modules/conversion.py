@@ -6,7 +6,7 @@ def convert(weight):
 def kiloToPound(weight):
 	weight = weight.replace('kg', '').strip()
 	try:
-		weight = float(weight) * 2.2
+		weight = float(weight) * 2.205
 		return 'Thats ' + ('%.2f' % round(weight, 2)) + 'lb'
 	except:
 		return
@@ -14,7 +14,7 @@ def kiloToPound(weight):
 def poundToKilo(weight):
 	weight = weight.replace('lb', '').strip()
 	try:
-		weight = float(weight) / 2.2
+		weight = float(weight) / 2.205
 		return 'Thats ' + ('%.2f' % round(weight, 2)) + 'kg'
 	except:
 		return
